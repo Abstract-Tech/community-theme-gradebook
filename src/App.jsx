@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { AppProvider } from '@edx/frontend-platform/react';
 
-import Footer from '@edx/frontend-component-footer';
-import Header from '@edx/frontend-component-header';
+import Footer from '@abstract-tech/community-theme-footer';
+import Header from '@abstract-tech/community-theme-header';
 
 import { routePath } from 'data/constants/app';
 import store from 'data/store';
