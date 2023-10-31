@@ -79,6 +79,7 @@ export class GradebookTable extends React.Component {
           <DataTable.Table />
           <DataTable.EmptyTable content={<FormattedMessage {...messages.noResultsFound} />} />
         </DataTable>
+
       </div>
     );
   }

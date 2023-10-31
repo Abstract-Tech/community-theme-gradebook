@@ -66,6 +66,8 @@ const app = (state = initialState, { type, payload }) => {
       };
     case actions.setModalStateFromTable.toString(): {
       const { subsection, userEntry } = payload;
+      console.log("Heloooooooo");
+      console.log('userEntry:', userEntry);
       return {
         ...state,
         modalState: {

@@ -10,6 +10,7 @@ import { StrictDict } from 'utils';
  * @param {string} username - username for display
  * @param {userKey} userKey - external_user_key for display
  */
+
 const Username = ({ username, userKey }) => (
   <div>
     <span className="wrap-text-in-cell">

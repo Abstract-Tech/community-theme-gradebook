@@ -9,8 +9,9 @@ import grades from 'data/actions/grades';
 import { sortAlphaAsc } from 'data/actions/utils';
 import selectors from 'data/selectors';
 import lms from 'data/services/lms';
-
+import { get } from '../services/lms/utils'; // Adjust the import path as needed
 import * as module from './grades';
+import { getUrlPrefix } from '../services/lms/urls';
 
 const { formatGradeOverrideForDisplay } = selectors.grades;
 
@@ -40,7 +41,43 @@ export const fetchGrades = (overrides = {}) => (
       track,
       fetchOptions,
     ).then(response => response.data)
-      .then((data) => {
+      .then(async (data) => {
+   console.log(data);
+    // Extract an array of user IDs from data.results
+    const userIDs = data.results.map((result) => result.user_id);
+    console.log("userid");
+    console.log(userIDs);
+    // Fetch user full names based on user IDs using the "get" function
+    const userFullNamePromises = userIDs.map(async (userID) => {
+      try {
+        const userResponse = await get(`${getUrlPrefix()}user/v1/users/${userID}`);
+        const user = userResponse.data;
+        return {
+          userID,
+          fullName: `${user.profile.first_name} ${user.profile.last_name}`,
+        };
+      } catch (error) {
+        console.error(`Error fetching user ${userID}:`, error);
+        return {
+          userID,
+          fullName: 'Unknown',
+        };
+      }
+    });
+
+    // Use Promise.all to wait for all user full name fetches to complete
+    const userFullNames = await Promise.all(userFullNamePromises);
+
+    // Combine user full names with the data
+    const enrichedData = data.results.map((result) => {
+      const userFullNameData = userFullNames.find((item) => item.userID === result.user_id);
+      return {
+        ...result,
+        userFullName: userFullNameData ? userFullNameData.fullName : 'Unknown',
+      };
+    });
+
+
         dispatch(grades.fetching.received({
           assignmentType: (assignmentType || selectors.filters.assignmentType(getState())),
           cohort,
@@ -52,6 +89,8 @@ export const fetchGrades = (overrides = {}) => (
           totalUsersCount: data.total_users_count,
           filteredUsersCount: data.filtered_users_count,
         }));
+        console.log(courseId);
+        console.log('hi');
         if (fetchOptions.showSuccess) {
           dispatch(grades.banner.open());
         }
@@ -62,6 +101,8 @@ export const fetchGrades = (overrides = {}) => (
       });
   }
 );
+
+
 
 export const fetchGradesIfAssignmentGradeFiltersSet = () => (
   (dispatch, getState) => {
