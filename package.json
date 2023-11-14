@@ -28,9 +28,9 @@
     "extends @edx/browserslist-config"
   ],
   "dependencies": {
-    "@edx/brand": "npm:@edx/brand-openedx@^1.2.0",
-    "@edx/frontend-component-footer": "12.2.0",
-    "@edx/frontend-component-header": "4.6.0",
+    "@edx/brand": "git+https://git@github.com/abstract-tech/community-theme-brand.git#quince",
+    "@edx/frontend-component-footer": "git+https://git@github.com/abstract-tech/community-theme-footer.git#quince",
+    "@edx/frontend-component-header": "git+https://git@github.com/abstract-tech/community-theme-header.git#quince",
     "@edx/frontend-platform": "5.5.4",
     "@edx/paragon": "20.45.0",
     "@edx/react-unit-test-utils": "1.7.0",
